@@ -4,8 +4,13 @@ const path = require('path');
 const stylesPath = path.join(__dirname, 'styles');
 const projectPath = path.join(__dirname, 'project-dist');
 
-const addToBundle = async (cssFilePath) => {
-  const bundlePath = path.join(projectPath, 'bundle.css');
+//test dir
+
+const stylesPathTest = path.join(__dirname, 'test-files', 'styles');
+const projectPathTest = path.join(__dirname, 'test-files');
+
+const addToBundle = async (cssFilePath, bundleDir) => {
+  const bundlePath = path.join(bundleDir, 'bundle.css');
   try {
     await fsPromise.access(bundlePath);
     await fsPromise.rm(bundlePath);
@@ -20,7 +25,7 @@ const addToBundle = async (cssFilePath) => {
   }
 };
 
-const checkCssFiles = async (dirPath) => {
+const checkCssFiles = async (dirPath, bundlePath) => {
   let data = await fsPromise.readdir(dirPath, { withFileTypes: true });
   data.forEach(async (elem) => {
     const ext = path.extname(elem.name);
@@ -29,7 +34,7 @@ const checkCssFiles = async (dirPath) => {
     if (elem.isFile() && ext === '.css') {
       try {
         await fsPromise.access(filePath);
-        await addToBundle(filePath);
+        await addToBundle(filePath, bundlePath);
       } catch (err) {
         return err;
       }
@@ -38,5 +43,6 @@ const checkCssFiles = async (dirPath) => {
 };
 
 (async () => {
-  await checkCssFiles(stylesPath);
+  await checkCssFiles(stylesPath, projectPath);
+  // await checkCssFiles(stylesPathTest, projectPathTest);
 })();
