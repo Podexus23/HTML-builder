@@ -20,11 +20,6 @@ rl.on('line', (line) => {
 });
 
 rl.on('SIGINT', () => {
-  process.stdout.write('Bye bye!');
+  process.stdout.write('See ya!');
   rl.close();
-  // rl.question('Exit (y or n)? ', (input) => {
-  //   if (input.match(/^y(es)?$/i)) {
-  //     rl.pause();
-  //   }
-  // });
 });
